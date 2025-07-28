@@ -71,9 +71,15 @@ class TestUrbanRoutes:
         assert data.MESSAGE_FOR_DRIVER in routes_page.comment_confirm()
 
     def test_order_blanket_and_handkerchiefs(self):
-        # Adicionar em S8
-        print("função criada para pedidos de cobertores e lencos")
-        pass
+        self.driver.get(data.URBAN_ROUTES_URL)
+        routes_page = UrbanRoutesPage(self.driver)
+        WebDriverWait(self.driver, 3).until(lambda d: True)
+        routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
+        routes_page.click_taxi_option()
+        routes_page.click_confort_icon()
+        routes_page.switch_cobertor()
+        assert routes_page.switch_cobertor_active() is True
+
 
     def test_order_2_ice_creams(self):
         # Adicionar em S8

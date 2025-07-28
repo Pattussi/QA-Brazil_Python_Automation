@@ -37,8 +37,8 @@ class UrbanRoutesPage:
 
     # ADICIONAR COMENTARIO
     add_comment = (By.ID, 'comment')
-    switch_blanket = (By.CSS_SELECTOR, 'switch')
-    switch_blanket_active = (By.XPATH, '//*[@id="root"]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div/span')
+    switch_blanket = (By.CSS_SELECTOR, "div.switch > span.slider.round")
+    switch_blanket_active = (By.CSS_SELECTOR, "div.switch > input.switch-input")
     add_icecream = (By.CSS_SELECTOR, '.counter-plus')
     qnt_icecream = (By.CSS_SELECTOR, '.counter-value')
     call_taxi_button = (By.CSS_SELECTOR, '.smart-button')
@@ -123,9 +123,20 @@ class UrbanRoutesPage:
     def confirm_cartao(self):
         return self.driver.find_element(*self.confrim_card).text
 
+
     def add_comentario(self, comentario):
         self.driver.find_element(*self.add_comment).send_keys(comentario)
 
     def comment_confirm(self):
         return self.driver.find_element(*self.add_comment).get_attribute('value')
 
+    def switch_cobertor(self):
+        self.driver.find_element(*self.switch_blanket).click()
+
+    def switch_cobertor_active(self):
+        # aguarda o checkbox real aparecer e verifica se está selecionado
+        checkbox = WebDriverWait(self.driver, 10).until(
+            Ec.presence_of_element_located(self.switch_blanket_active)
+        )
+        print("Cobertor está ativado?", checkbox.is_selected())  # Debug
+        return checkbox.is_selected()
