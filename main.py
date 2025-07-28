@@ -1,18 +1,30 @@
+from pages import UrbanRoutesPage
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as Ec
+from selenium.webdriver.support.wait import WebDriverWait
 import data
 import helpers
 
 class TestUrbanRoutes:
     @classmethod
     def setup_class(cls):
+        from selenium.webdriver import DesiredCapabilities
+        capabilities = DesiredCapabilities.CHROME
+        capabilities["goog:loggingPrefs"] = {'performance': 'ALL'}
+        cls.driver = webdriver.Chrome()
+
         if helpers.is_url_reachable(data.URBAN_ROUTES_URL):
             print("Conectado ao servidor Urban Routes")
         else:
             print("Não foi possível conectar ao Urban Routes. Verifique se o servidor está ligado e ainda em execução.")
 
     def test_set_route(self):
-        # Adicionar em S8
-        print("função criada para definir a rota")
-        pass
+        self.driver.get(data.URBAN_ROUTES_URL)
+        routes_page = UrbanRoutesPage(self.driver)
+        WebDriverWait(self.driver, 2).until(lambda d: True)
+        routes_page.enter_from_location(data.ADDRESS_FROM, data.ADDRESS_TO)
+        assert routes_page.get_from_location_value() == data.ADDRESS_FROM
+        assert routes_page.get_to_location_value() == data.ADDRESS_TO
 
     def test_select_plan(self):
         # Adicionar em S8
