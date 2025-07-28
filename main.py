@@ -82,11 +82,15 @@ class TestUrbanRoutes:
 
 
     def test_order_2_ice_creams(self):
-        # Adicionar em S8
-        number_of_ice_creams = 2
-        for count in range(number_of_ice_creams):
-            print("função criada para definir pedido de sorvete")
-        pass
+        self.driver.get(data.URBAN_ROUTES_URL)
+        routes_page = UrbanRoutesPage(self.driver)
+        WebDriverWait(self.driver, 3).until(lambda d: True)
+        routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
+        routes_page.click_taxi_option()
+        routes_page.click_confort_icon()
+        for _  in range(2):
+            routes_page.add_ice()
+        assert int(routes_page.qnt_sorvete()) == 2
 
     def test_car_search_model_appears(self):
         # Adicionar em S8

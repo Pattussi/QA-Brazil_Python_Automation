@@ -140,3 +140,9 @@ class UrbanRoutesPage:
         )
         print("Cobertor está ativado?", checkbox.is_selected())  # Debug
         return checkbox.is_selected()
+
+    def add_ice(self):
+        self.driver.find_element(*self.add_icecream).click()
+
+    def qnt_sorvete(self):
+        return self.driver.find_element(*self.qnt_icecream).text
