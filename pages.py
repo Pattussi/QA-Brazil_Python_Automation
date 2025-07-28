@@ -21,7 +21,20 @@ class UrbanRoutesPage:
 
     def enter_to_location(self, to_text):
         WebDriverWait(self.driver, 3).until(
-            Ec.visibility_of_element_located(self.to_field_field)
+            Ec.visibility_of_element_located(self.to_field)
         )
-        self.driver.find_element(*self.to_field).send_keys(to_text_text)
+        self.driver.find_element(*self.to_field).send_keys(to_text)
 
+    def enter_locations(self, from_text, to_text):
+        self.enter_from_location(from_text)
+        self.enter_to_location(to_text)
+
+    def get_from_location_value(self):
+        return WebDriverWait(self.driver, 3).until(
+            Ec.visibility_of_element_located(self.from_field)
+        ).get_attribute('value')
+
+    def get_to_location_value(self):
+        return WebDriverWait(self.driver, 3).until(
+            Ec.visibility_of_element_located(self.to_field)
+        ).get_attribute('value')
