@@ -40,9 +40,15 @@ class TestUrbanRoutes:
         assert routes_page.click_confort_active()
 
     def test_fill_phone_number(self):
-        # Adicionar em S8
-        print("função criada para definir o numero de celular")
-        pass
+        self.driver.get(data.URBAN_ROUTES_URL)
+        routes_page = UrbanRoutesPage(self.driver)
+        WebDriverWait(self.driver, 3).until(lambda d: True)
+        routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
+        routes_page.click_taxi_option()
+        routes_page.click_confort_icon()
+        routes_page.click_number_text(data.PHONE_NUMBER)
+        assert data.PHONE_NUMBER in routes_page.numero_confirmado()
+        time.sleep(8)
 
     def test_fill_card(self):
         # Adicionar em S8

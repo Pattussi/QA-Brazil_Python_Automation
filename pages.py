@@ -2,18 +2,29 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as Ec
 from selenium.webdriver.support.wait import WebDriverWait
+
+from data import PHONE_NUMBER
 from helpers import retrieve_phone_code
 
 
 class UrbanRoutesPage:
+
     # Seção DE e PARA
     from_field = (By.ID, 'from')
     to_field = (By.ID, 'to')
 
-    #Selecionar tarifa e chamar taxi
+    # Selecionar tarifa e chamar taxi
     taxi_option_locator = (By.XPATH, "//button[text()='Chamar um táxi']")
     confort_icon_locator = (By.XPATH, "//img[contains(@src, 'kids')]")
     confort_active =(By.XPATH,'//*[@id="root"]/div/div[3]/div[3]/div[2]/div[1]/div[5]')
+
+    # Numero de telefone
+    number_text_locator = (By.CSS_SELECTOR, '.np-button')
+    number_enter = (By.ID, 'phone')
+    number_confirm = (By.CSS_SELECTOR, '.button.full')
+    number_code = (By.ID, 'code')
+    code_confirm = (By.XPATH, '//button[contains(text(),"Confirmar")]')
+    number_finish = (By.CSS_SELECTOR, '.np-text')
 
     def __init__(self, driver):
         self.driver = driver
@@ -57,3 +68,25 @@ class UrbanRoutesPage:
             return "active" in active_button.get_attribute("class")
         except:
             return False
+
+    def click_number_text(self, telefone):
+        self.driver.find_element(*self.number_text_locator).click() #clica no numero
+
+        self.driver.find_element(*self.number_enter).send_keys(telefone) #digita o numero
+
+        self.driver.find_element(*self.number_confirm).click() #confirma o numero
+
+        code = retrieve_phone_code(self.driver) #digita o codigo
+        code_input = WebDriverWait(self.driver, 3).until(
+            Ec.visibility_of_element_located(self.number_code)
+        )
+        code_input.clear()
+        code_input.send_keys(code)
+
+        self.driver.find_element(*self.code_confirm).click()  #Confirma
+
+    def numero_confirmado(self):
+        numero = WebDriverWait(self.driver, 10).until(
+            Ec.visibility_of_element_located(self.number_finish))
+        return numero.text
+
