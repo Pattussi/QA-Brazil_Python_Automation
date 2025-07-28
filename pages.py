@@ -35,6 +35,15 @@ class UrbanRoutesPage:
     close_button_card = (By.XPATH, '//*[@id="root"]/div/div[2]/div[2]/div[1]/button')
     confrim_card = (By.CSS_SELECTOR, '.pp-value-text')
 
+    # ADICIONAR COMENTARIO
+    add_comment = (By.ID, 'comment')
+    switch_blanket = (By.CSS_SELECTOR, 'switch')
+    switch_blanket_active = (By.XPATH, '//*[@id="root"]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div/span')
+    add_icecream = (By.CSS_SELECTOR, '.counter-plus')
+    qnt_icecream = (By.CSS_SELECTOR, '.counter-value')
+    call_taxi_button = (By.CSS_SELECTOR, '.smart-button')
+    pop_up = (By.CSS_SELECTOR, '.order-header-tittle')
+
 
     def __init__(self, driver):
         self.driver = driver
@@ -114,4 +123,9 @@ class UrbanRoutesPage:
     def confirm_cartao(self):
         return self.driver.find_element(*self.confrim_card).text
 
+    def add_comentario(self, comentario):
+        self.driver.find_element(*self.add_comment).send_keys(comentario)
+
+    def comment_confirm(self):
+        return self.driver.find_element(*self.add_comment).get_attribute('value')
 
