@@ -10,6 +10,11 @@ class UrbanRoutesPage:
     from_field = (By.ID, 'from')
     to_field = (By.ID, 'to')
 
+    #Selecionar tarifa e chamar taxi
+    taxi_option_locator = (By.XPATH, "//button[text()='Chamar um táxi']")
+    confort_icon_locator = (By.XPATH, "//img[contains(@src, 'kids')]")
+    confort_active =(By.XPATH,'//*[@id="root"]/div/div[3]/div[3]/div[2]/div[1]/div[5]')
+
     def __init__(self, driver):
         self.driver = driver
 
@@ -38,3 +43,17 @@ class UrbanRoutesPage:
         return WebDriverWait(self.driver, 3).until(
             Ec.visibility_of_element_located(self.to_field)
         ).get_attribute('value')
+
+    def click_taxi_option(self):
+        self.driver.find_element(*self.taxi_option_locator).click()
+
+    def click_confort_icon(self):
+        self.driver.find_element(*self.confort_icon_locator).click()
+
+    def click_confort_active(self):
+        try:
+            active_button = WebDriverWait(self.driver, 10).until(
+                Ec.visibility_of_element_located(self.confort_active))
+            return "active" in active_button.get_attribute("class")
+        except:
+            return False

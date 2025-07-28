@@ -14,6 +14,7 @@ class TestUrbanRoutes:
         capabilities = DesiredCapabilities.CHROME
         capabilities["goog:loggingPrefs"] = {'performance': 'ALL'}
         cls.driver = webdriver.Chrome()
+        cls.driver.implicitly_wait(5)
 
         if helpers.is_url_reachable(data.URBAN_ROUTES_URL):
             print("Conectado ao servidor Urban Routes")
@@ -30,9 +31,13 @@ class TestUrbanRoutes:
         time.sleep(5)
 
     def test_select_plan(self):
-        # Adicionar em S8
-        print("função criada para definir um plano")
-        pass
+        self.driver.get(data.URBAN_ROUTES_URL)
+        routes_page = UrbanRoutesPage(self.driver)
+        WebDriverWait(self.driver, 3).until(lambda d: True)
+        routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
+        routes_page.click_taxi_option()
+        routes_page.click_confort_icon()
+        assert routes_page.click_confort_active()
 
     def test_fill_phone_number(self):
         # Adicionar em S8
