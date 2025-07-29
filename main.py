@@ -1,7 +1,7 @@
 from pages import UrbanRoutesPage
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as Ec
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import time
 import data
@@ -93,6 +93,20 @@ class TestUrbanRoutes:
         assert int(routes_page.qnt_sorvete()) == 2
 
     def test_car_search_model_appears(self):
-        # Adicionar em S8
-        print("função criada para definir o modelo do carro")
-        pass
+        self.driver.get(data.URBAN_ROUTES_URL)
+        routes_page = UrbanRoutesPage(self.driver)
+        WebDriverWait(self.driver, 3).until(lambda d: True)
+        routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
+        routes_page.click_taxi_option()
+        routes_page.click_confort_icon()
+        routes_page.click_number_text(data.PHONE_NUMBER)
+        routes_page.click_add_cartao(data.CARD_NUMBER, data.CARD_CODE)
+        routes_page.add_comentario(data.MESSAGE_FOR_DRIVER)
+        routes_page.call_taxi()
+        assert "Buscar carro" in routes_page.pop_up_show()
+        time.sleep (5)
+
+    @classmethod
+    def teardown_class(cls):
+        cls.driver.quit()
+

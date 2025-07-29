@@ -1,6 +1,6 @@
 import time
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as Ec
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from data import PHONE_NUMBER
@@ -42,7 +42,7 @@ class UrbanRoutesPage:
     add_icecream = (By.CSS_SELECTOR, '.counter-plus')
     qnt_icecream = (By.CSS_SELECTOR, '.counter-value')
     call_taxi_button = (By.CSS_SELECTOR, '.smart-button')
-    pop_up = (By.CSS_SELECTOR, '.order-header-tittle')
+    pop_up =  (By.XPATH, "//*[contains(text(),'Buscar carro')]")
 
 
     def __init__(self, driver):
@@ -50,13 +50,13 @@ class UrbanRoutesPage:
 
     def enter_from_location(self, from_text):
         WebDriverWait(self.driver, 3).until(
-            Ec.visibility_of_element_located(self.from_field)
+            EC.visibility_of_element_located(self.from_field)
         )
         self.driver.find_element(*self.from_field).send_keys(from_text)
 
     def enter_to_location(self, to_text):
         WebDriverWait(self.driver, 3).until(
-            Ec.visibility_of_element_located(self.to_field)
+            EC.visibility_of_element_located(self.to_field)
         )
         self.driver.find_element(*self.to_field).send_keys(to_text)
 
@@ -66,12 +66,12 @@ class UrbanRoutesPage:
 
     def get_from_location_value(self):
         return WebDriverWait(self.driver, 3).until(
-            Ec.visibility_of_element_located(self.from_field)
+            EC.visibility_of_element_located(self.from_field)
         ).get_attribute('value')
 
     def get_to_location_value(self):
         return WebDriverWait(self.driver, 3).until(
-            Ec.visibility_of_element_located(self.to_field)
+            EC.visibility_of_element_located(self.to_field)
         ).get_attribute('value')
 
     def click_taxi_option(self):
@@ -83,7 +83,7 @@ class UrbanRoutesPage:
     def click_confort_active(self):
         try:
             active_button = WebDriverWait(self.driver, 10).until(
-                Ec.visibility_of_element_located(self.confort_active))
+                EC.visibility_of_element_located(self.confort_active))
             return "active" in active_button.get_attribute("class")
         except:
             return False
@@ -97,7 +97,7 @@ class UrbanRoutesPage:
 
         code = retrieve_phone_code(self.driver) #digita o codigo
         code_input = WebDriverWait(self.driver, 3).until(
-            Ec.visibility_of_element_located(self.number_code)
+            EC.visibility_of_element_located(self.number_code)
         )
         code_input.clear()
         code_input.send_keys(code)
@@ -106,7 +106,7 @@ class UrbanRoutesPage:
 
     def numero_confirmado(self):
         numero = WebDriverWait(self.driver, 10).until(
-            Ec.visibility_of_element_located(self.number_finish))
+            EC.visibility_of_element_located(self.number_finish))
         return numero.text
 
     def click_add_cartao(self,cartao,code):
@@ -136,7 +136,7 @@ class UrbanRoutesPage:
     def switch_cobertor_active(self):
         # aguarda o checkbox real aparecer e verifica se está selecionado
         checkbox = WebDriverWait(self.driver, 10).until(
-            Ec.presence_of_element_located(self.switch_blanket_active)
+            EC.presence_of_element_located(self.switch_blanket_active)
         )
         print("Cobertor está ativado?", checkbox.is_selected())  # Debug
         return checkbox.is_selected()
@@ -146,3 +146,11 @@ class UrbanRoutesPage:
 
     def qnt_sorvete(self):
         return self.driver.find_element(*self.qnt_icecream).text
+
+    def call_taxi(self):
+        self.driver.find_element(*self.call_taxi_button).click()
+
+    def pop_up_show(self):
+        pop_up = WebDriverWait(self.driver,10).until(
+            EC.presence_of_element_located(self.pop_up))
+        return pop_up.text
