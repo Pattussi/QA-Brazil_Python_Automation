@@ -79,6 +79,10 @@ O fluxo de teste cobre todo o processo de solicitação de corrida no Urban Rout
 
 ---
 
+### 🎉 Certificação - SPRINT 
+<img src="imagens\Oito.7Sprint.png"> 
+
+---
 ## ✨ Sobre Mim
 Sou **Leonardo Pattussi**, profissional em transição para a área de **Qualidade de Software (QA)**.  
 Após mais de 12 anos atuando como gerente comercial, concluí o **Bootcamp QA da TripleTen**, aplicando agora minha experiência analítica e de processos para garantir a entrega de produtos digitais de qualidade.  
